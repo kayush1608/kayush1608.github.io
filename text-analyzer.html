@@ -4,60 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Analysis Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --bg-color: #f5f7fa;
+            --container-bg: white;
+            --text-color: #333;
+            --heading-color: #2c3e50;
+            --results-bg: #f9f9f9;
+            --border-color: #ddd;
+            --table-header-bg: #f2f2f2;
+            --highlight-color: #3498db;
+            --transition: all 0.3s ease;
+        }
+        
+        body.dark-theme {
+            --primary-color: #62d0ff;
+            --secondary-color: #5090b8;
+            --bg-color: #121212;
+            --container-bg: #1e2227;
+            --text-color: #e1e1e1;
+            --heading-color: #f1f1f1;
+            --results-bg: #2c3036;
+            --border-color: #444;
+            --table-header-bg: #2a2f36;
+            --highlight-color: #62d0ff;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-color);
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f7fa;
+            background-color: var(--bg-color);
+            transition: var(--transition);
         }
         
-        h1, h2 {
-            color: #2c3e50;
+        h1, h2, h3 {
+            color: var(--heading-color);
+            transition: var(--transition);
         }
         
         .container {
-            background-color: white;
+            background-color: var(--container-bg);
             border-radius: 8px;
             padding: 25px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
         }
         
         textarea {
             width: 100%;
             height: 300px;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 16px;
             resize: vertical;
             margin-bottom: 20px;
+            background-color: var(--container-bg);
+            color: var(--text-color);
+            transition: var(--transition);
         }
         
         button {
-            background-color: #3498db;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 12px 24px;
             font-size: 16px;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
         
         button:hover {
-            background-color: #2980b9;
+            background-color: var(--secondary-color);
         }
         
         #results {
             margin-top: 30px;
-            background-color: #f9f9f9;
+            background-color: var(--results-bg);
             padding: 20px;
             border-radius: 4px;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid var(--highlight-color);
+            transition: var(--transition);
         }
         
         .result-section {
@@ -66,9 +101,10 @@
         
         .result-section h3 {
             margin-bottom: 10px;
-            color: #3498db;
-            border-bottom: 1px solid #ddd;
+            color: var(--highlight-color);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 5px;
+            transition: var(--transition);
         }
         
         table {
@@ -78,7 +114,8 @@
         }
         
         table, th, td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
         }
         
         th, td {
@@ -87,7 +124,7 @@
         }
         
         th {
-            background-color: #f2f2f2;
+            background-color: var(--table-header-bg);
         }
         
         .category {
@@ -98,18 +135,134 @@
             display: none;
             margin: 20px 0;
             text-align: center;
-            color: #3498db;
+            color: var(--highlight-color);
         }
         
         .sample-btn {
             background-color: #95a5a6;
             margin-left: 10px;
         }
+        
+        header {
+            background-color: var(--dark-color, #343a40);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--highlight-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .slider .icon {
+            position: absolute;
+            top: 4px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        .slider .sun {
+            left: 5px;
+            color: #f39c12;
+            opacity: 1;
+        }
+        
+        .slider .moon {
+            right: 5px;
+            color: #f1c40f;
+            opacity: 0;
+        }
+        
+        input:checked + .slider .sun {
+            opacity: 0;
+        }
+        
+        input:checked + .slider .moon {
+            opacity: 1;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-link:hover {
+            color: var(--highlight-color);
+        }
     </style>
 </head>
 <body>
+    <header>
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Main Page
+        </a>
+        <h1>Text Analysis Tool</h1>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="theme-toggle">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider">
+                    <i class="fas fa-sun icon sun"></i>
+                    <i class="fas fa-moon icon moon"></i>
+                </span>
+            </label>
+        </div>
+    </header>
+    
     <div class="container">
-        <h1>Advanced Text Analysis Tool</h1>
         <p>Enter or paste text (10,000+ words recommended) in the box below and click "Analyze" to get detailed text statistics.</p>
         
         <textarea id="textInput" placeholder="Enter or paste your text here (minimum 10,000 words recommended)..."></textarea>
@@ -174,8 +327,24 @@
             const textInput = document.getElementById('textInput');
             const loadingDiv = document.getElementById('loading');
             const resultsDiv = document.getElementById('results');
+            const themeToggle = document.getElementById('theme-toggle');
             
-            // Define language components
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.checked = true;
+            }
+            
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
             const pronouns = {
                 "personal": ["i", "me", "my", "mine", "myself", "you", "your", "yours", "yourself", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "we", "us", "our", "ours", "ourselves", "they", "them", "their", "theirs", "themselves"],
                 "demonstrative": ["this", "that", "these", "those"],
@@ -197,7 +366,6 @@
                 "general": ["the"]
             };
             
-            // Load sample text for testing
             sampleBtn.addEventListener('click', function() {
                 fetch('https://raw.githubusercontent.com/amephraim/nlp/master/texts/J.%20K.%20Rowling%20-%20Harry%20Potter%201%20-%20Sorcerer\'s%20Stone.txt')
                     .then(response => response.text())
@@ -209,7 +377,6 @@
                     });
             });
 
-            // Analyze text button click handler
             analyzeBtn.addEventListener('click', function() {
                 const text = textInput.value.trim();
                 
@@ -221,7 +388,6 @@
                 loadingDiv.style.display = 'block';
                 resultsDiv.style.display = 'none';
                 
-                // Use setTimeout to allow UI to update before intensive processing
                 setTimeout(() => {
                     analyzeText(text);
                     loadingDiv.style.display = 'none';
@@ -230,31 +396,27 @@
             });
             
             function analyzeText(text) {
-                // Task 1: Calculate basic statistics
                 const letterCount = (text.match(/[a-zA-Z]/g) || []).length;
                 const wordCount = text.split(/\s+/).filter(Boolean).length;
                 const spaceCount = (text.match(/\s/g) || []).length;
                 const newlineCount = (text.match(/\n/g) || []).length;
                 const specialCount = (text.match(/[^\w\s]/g) || []).length;
                 
-                // Update basic stats display
                 document.getElementById('letterCount').textContent = letterCount;
                 document.getElementById('wordCount').textContent = wordCount;
                 document.getElementById('spaceCount').textContent = spaceCount;
                 document.getElementById('newlineCount').textContent = newlineCount;
                 document.getElementById('specialCount').textContent = specialCount;
                 
-                // Task 2-4: Tokenize and count pronouns, prepositions, and articles
                 const tokens = text.toLowerCase()
-                    .replace(/[^\w\s]/g, ' ') // Replace special chars with space
-                    .replace(/\s+/g, ' ')     // Normalize whitespace
+                    .replace(/[^\w\s]/g, ' ') 
+                    .replace(/\s+/g, ' ') 
                     .split(' ')
-                    .filter(Boolean);         // Remove empty strings
+                    .filter(Boolean);
                 
                 const bigramTokens = getBigrams(text.toLowerCase());
                 const trigramTokens = getTrigrams(text.toLowerCase());
                 
-                // Count occurrences
                 const pronounCounts = countWordsByCategory(tokens, pronouns);
                 const prepositionCounts = {
                     ...countWordsByCategory(tokens, { "simple": prepositions.simple }),
@@ -262,13 +424,11 @@
                 };
                 const articleCounts = countWordsByCategory(tokens, indefiniteArticles);
                 
-                // Display tables
                 document.getElementById('pronounsTable').innerHTML = generateTable(pronounCounts);
                 document.getElementById('prepositionsTable').innerHTML = generateTable(prepositionCounts);
                 document.getElementById('articlesTable').innerHTML = generateTable(articleCounts);
             }
             
-            // Helper function to generate n-grams
             function getBigrams(text) {
                 const words = text.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').split(' ').filter(Boolean);
                 const bigrams = [];
@@ -287,7 +447,6 @@
                 return trigrams;
             }
             
-            // Count occurrences of words by category
             function countWordsByCategory(tokens, categories) {
                 const result = {};
                 
@@ -308,12 +467,11 @@
                 return result;
             }
             
-            // Count occurrences of phrases (for complex prepositions)
             function countPhrasesByCategory(bigrams, trigrams, categories) {
                 const result = {};
                 
                 for (const [category, phrasesList] of Object.entries(categories)) {
-                    if (category === 'simple') continue; // Already handled by countWordsByCategory
+                    if (category === 'simple') continue;
                     
                     result[category] = {};
                     
@@ -340,7 +498,6 @@
                 return result;
             }
             
-            // Generate HTML table from counts data
             function generateTable(data) {
                 let tableHTML = '<table><tr><th>Category</th><th>Word/Phrase</th><th>Count</th></tr>';
                 let totalCount = 0;

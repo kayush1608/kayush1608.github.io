@@ -1,4 +1,3 @@
-// Smooth scrolling for navigation links
 document.querySelectorAll('nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -13,7 +12,6 @@ document.querySelectorAll('nav a').forEach(anchor => {
     });
 });
 
-// Add active class to navigation links on scroll
 window.addEventListener('scroll', () => {
     const sections = document.querySelectorAll('section');
     const navLinks = document.querySelectorAll('nav a');
@@ -37,7 +35,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Animation for skill bars
 const skillSection = document.querySelector('.skills');
 const skillBars = document.querySelectorAll('.skill-level');
 
@@ -52,7 +49,6 @@ function animateSkillBars() {
     });
 }
 
-// Check if skill section is in viewport
 const isInViewport = element => {
     const rect = element.getBoundingClientRect();
     return (
@@ -61,7 +57,6 @@ const isInViewport = element => {
     );
 };
 
-// Trigger animation when scrolling to the skills section
 let animated = false;
 window.addEventListener('scroll', () => {
     if (isInViewport(skillSection) && !animated) {
@@ -70,7 +65,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Add a simple greeting based on time of day
 const updateGreeting = () => {
     const greeting = document.querySelector('.hero-content h2');
     const hour = new Date().getHours();
@@ -87,19 +81,14 @@ const updateGreeting = () => {
     greeting.textContent = `${timeGreeting}, Welcome to My Personal Website`;
 };
 
-// Call greeting function when page loads
 document.addEventListener('DOMContentLoaded', () => {
     updateGreeting();
 });
 
-// Form validation for contact form (if you decide to add one later)
-// This is a placeholder function for future implementation
 function validateForm() {
-    // Add form validation logic here if you add a contact form
     return true;
 }
 
-// Image lazy loading for better performance
 document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('img');
     
@@ -108,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
             img.setAttribute('loading', 'lazy');
         });
     } else {
-        // Fallback for browsers that don't support lazy loading
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
         document.body.appendChild(script);
@@ -117,6 +105,31 @@ document.addEventListener('DOMContentLoaded', () => {
             img.classList.add('lazyload');
             img.setAttribute('data-src', img.src);
             img.src = '';
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const currentTheme = localStorage.getItem('theme');
+    
+    if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+        document.body.classList.add('dark-theme');
+        if (document.getElementById('theme-toggle')) {
+            document.getElementById('theme-toggle').checked = true;
+        }
+    }
+    
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-theme');
+                localStorage.setItem('theme', 'light');
+            }
         });
     }
 });
