@@ -34,7 +34,17 @@ document.addEventListener("DOMContentLoaded", function() {
  * @param {string} objectDetails
  */
 function logEvent(eventType, objectDetails) {
-    const timestamp = new Date().toISOString();
+    // Use local time instead of UTC (toISOString)
+    const timestamp = new Date().toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    }).replace(/\//g, '-');
+    
     console.log(`${timestamp}, ${eventType}, ${objectDetails}`);
 }
 
